@@ -1,4 +1,59 @@
-<h3>Søk i spørsmål</h3>
-<div class="md-form active-cyan-2 mb-3">
-  <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-</div>
+<h2>Faq</h2>
+
+<button (click)="createCookie()" mat-button>Lag</button>
+<button (click)="getCookie()" mat-button>Hent</button>
+<button (click)="checkCookie(1)" mat-button>Sjekk</button>
+  <button (click)="deleteCookie('votes')" mat-button>Slett</button>
+<mat-tab-group [selectedIndex]="selected.value"
+               (selectedIndexChange)="selected.setValue($event)">
+  <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
+    <div *ngIf="index; else tilbakemeldinger">
+      <div *ngFor="let q of dbq">
+        <div *ngIf="q.category==0">
+          <div class="container">
+            <div class="container">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{q.name}}
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    {{q.body}}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <p>{{q.answer}}</p>
+              </mat-expansion-panel>
+              <fa-icon [icon]="faThumbsUp" (click)="doot(q,1)" class="fa-thumbs" [class.active]="q.upactive"> </fa-icon>
+              {{q.points}}
+              <fa-icon [icon]="faThumbsDown" (click)="doot(q,-1)" class="fa-thumbs" [class.active]="q.downactive"></fa-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--
+        DRY  -> Dont repeat yourself
+-->
+    <ng-template #tilbakemeldinger>
+      <div *ngFor="let q of dbq">
+        <div *ngIf="q.category==1">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{q.name}}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{q.title}}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>{{q.body}}</p>
+              <fa-icon [icon]="faThumbsUp" (click)="doot(q, 1)" class="fa-thumbs" [class.active]="q.upactive"> </fa-icon>
+              {{q.points}}
+              <fa-icon [icon]="faThumbsDown" (click)="doot(q, -1)" class="fa-thumbs" [class.active]="q.downactive"></fa-icon>
+          </mat-expansion-panel>
+        </div>
+      </div>
+    </ng-template>
+
+  </mat-tab>
+</mat-tab-group>

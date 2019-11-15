@@ -1,0 +1,11 @@
+<mat-form-field class="example-full-width">
+  <input #searchBox id="search-box"
+        (input)="search(searchBox.value)" matInput placeholder="Søk i spørsmål" value="">
+  <ul class="search-result">
+    <li *ngFor="let q of questions$ | async">
+      <a href="/api/getById?id={{q.id}}">
+         {{q.title}}
+         </a>
+    </li>
+  </ul>
+</mat-form-field>

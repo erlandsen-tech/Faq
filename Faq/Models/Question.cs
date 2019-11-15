@@ -8,9 +8,10 @@ namespace Faq.Models
 {
     public class Question
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Body { get; set; }
-        public int Points { get; set; }
+        public string title { get; set; }
+        public string body { get; set; }
+        public string category { get; set; }
+        public string name { get; set; }
+        public string email { get; set; }
     }
 }

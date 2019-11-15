@@ -9,12 +9,20 @@ namespace Faq.Data
 {
     public class FaqDatabase : DbContext
     {
-        public FaqDatabase (DbContextOptions<FaqDatabase> options)
-            : base(options)
+        public virtual DbSet<dbQuestion> Questions { get; set; }
+        public FaqDatabase()
+        {
+            Database.EnsureCreated();
+        }
+        public FaqDatabase(DbContextOptions<FaqDatabase> options)
+    : base(options)
         {
         }
-
-        public DbSet<dbQuestion> Question { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(
+                @"Server=(localdb)\mssqllocaldb;Database=FaqDatabase;Integrated Security=True");
+        }
     }
     public class dbQuestion
     {
@@ -23,5 +31,9 @@ namespace Faq.Data
         public string Title { get; set; }
         public string Body { get; set; }
         public int Points { get; set; }
+        public string Answer { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Category { get; set; }
     }
 }

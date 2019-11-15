@@ -1,0 +1,79 @@
+<h1>Kontakt</h1>
+<br />
+<form [formGroup]="skjema" (ngSubmit)="onSubmit(skjema)">
+  <label>
+    Navn:
+    <input type="text" formControlName="name" required minlength="2" pattern="[a-zA-Z ]*" />
+  </label>
+  <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+    <div *ngIf="name.errors.required">
+      Du må skrive inn et navn.
+    </div>
+    <div *ngIf="name.errors.minlength">
+      Navnet må ha minst to bokstaver.
+    </div>
+    <div *ngIf="name.errors.pattern">
+      Navn kan ikke inneholde tall eller spesialtegn.
+    </div>
+  </div>
+  <br />
+  <label>
+    E-post
+    <input type="email" formControlName="email" required email>
+  </label>
+  <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+    <div *ngIf="email.errors.required">
+      Du må skrive inn en epost adresse
+    </div>
+    <div *ngIf="email.errors.email">
+      Denne adressen er ikke gyldig.
+    </div>
+  </div>
+  <br />
+
+  <label>
+    Tittel:
+    <input type="text" formControlName="title" required pattern="[a-zA-Z0-9 ]*">
+  </label>
+  <div *ngIf="title.invalid && (title.dirty || title.touched)" class="alert alert-danger">
+    <div *ngIf="title.errors.required">
+      Innlegget må ha en tittel
+    </div>
+    <div *ngIf="title.errors.pattern">
+      Tittelen kan kun inneholde tall og bokstaver
+    </div>
+  </div>
+  <br />
+  <label>
+    Melding:
+    <input type="text" formControlName="body" required minlength="10">
+  </label>
+  <div *ngIf="body.invalid && (body.dirty || body.touched)" class="alert alert-danger">
+    <div *ngIf="body.errors.required">
+      Du må skrive en melding til oss
+    </div>
+    <div *ngIf="body.errors.minlength">
+      Meldingen må ha minst 10 tegn
+    </div>
+  </div>
+  <br />
+  <label>
+    Kategori:
+    <select formControlName="category" required >
+      <option disabled="disabled" selected="selected">Velg kategori</option>
+      <option value="0">Spørsmål</option>
+      <option value="1">Tilbakemelding</option>
+    </select>
+  </label>
+  <div *ngIf="category.invalid && (category.dirty || category.touched)" class="alert alert-danger">
+    <div *ngIf="category.errors.required">
+      Meldingen må ha en kategori
+    </div>
+  </div>
+  <br />
+  <button type="submit" [disabled]="!skjema.valid">Send</button>
+</form>
+<br />
+<p>
+  Form Status: {{ skjema.status }}
+</p>
