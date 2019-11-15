@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Faq.Logikk
+namespace Faq.Models
 {
-    public class Logikk
+    public class Vote
     {
+        public int id { get; set; }
+        public int vote { get; set; }
     }
 }
