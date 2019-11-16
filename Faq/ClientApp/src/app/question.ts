@@ -6,6 +6,6 @@ export class Question {
         public body: string,
         public category: string,
         public name: string,
-        public email: string
+        public email: string,
         ) { }
 }

@@ -57,14 +57,13 @@ namespace Faq
                 {
                     question.Points += vote.vote;
                     int result = context.SaveChanges();
-                    return result;
+                    return question.Points;
                 }
             }
             return 0;
         }
 
         //Internal static methods
-        //TODO error handling
         private static List<QuestionWithAnswers> convertListOfQ(List<dbQuestion> dbQs)
         {
             var qList = new List<QuestionWithAnswers>();

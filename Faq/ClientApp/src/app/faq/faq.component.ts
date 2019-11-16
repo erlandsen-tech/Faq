@@ -24,14 +24,14 @@ export class FaqComponent implements OnInit {
 
     ngOnInit() {
         this.getQ();
-        this.voteState.set(1, 1);
-        this.voteState.set(2, 1);
-        this.voteState.set(3, -1);
-        this.setState();
+        this.createCookie();
+        this.getState();
     }
     getQ(): void {
         this.tilkobling.getQ()
-            .subscribe(questions => this.dbq = questions);
+            .subscribe(questions => {
+                this.dbq = questions;
+            })
     }
     vote(id: number, vote: number): void {
         this.tilkobling.Vote(id, vote)
@@ -39,56 +39,79 @@ export class FaqComponent implements OnInit {
     }
 
     //upDoot / downDoot
-    doot(item: any, vote: number): void {
-        if (item.upactive || item.downactive) {
-            switch (item.upactive) {
-                case (true): this.vote(item.id, -1); break;
-                case (false): this.vote(item.id, 1); break;
+    doot(item: any, vote: number): number {
+        var returnValue = 0;
+        if (this.getUpState(item) || this.getDownState(item)) {
+            switch (this.getUpState(item)) {
+                case (true): this.vote(item.id, -1); returnValue = -1; break;
+                case (false): this.vote(item.id, 1); returnValue = 1; break;
             }
-            item.downactive = false;
-            item.upactive = false;
+            this.setState(item.id, 0);
+            return returnValue;
         }
         else {
             switch (vote) {
-                case (1): this.vote(item.id, vote); item.upactive = !item.upactive; break;
-                case (-1): this.vote(item.id, vote); item.downactive = !item.downactive; break;
+                case (1): this.vote(item.id, vote); this.setState(item.id, 1); returnValue = 1; break;
+                case (-1): this.vote(item.id, vote); this.setState(item.id, -1); returnValue = -1;break;
             }
+            return returnValue;
 
         }
     }
-
-    createCookie() {
+    updateCookie(cookieMap: Map<any, any>) {
         var expiredDate = new Date();
         expiredDate.setDate(expiredDate.getDate() + 7);
-        this.cookieService.set('votes', JSON.stringify([...this.voteState]), expiredDate);
-        console.log("made");
+        this.cookieService.set('votes', this.mapToJson(cookieMap), expiredDate);
+        this.getState();
+    }
+
+    getUpState(item: any): boolean {
+        return (this.voteState.get(item.id) == 1);
+    }
+    getDownState(item: any): boolean {
+        return (this.voteState.get(item.id) == -1);
+    }
+
+    setState(id: number, state: number) {
+        var cookie = this.getCookie();
+        var cookieMap = this.jsonToMap(cookie);
+        cookieMap.set(id, state);
+        this.updateCookie(cookieMap);
+    }
+
+    createCookie() {
+        if (!this.cookieService.check('votes')) {
+            var expiredDate = new Date();
+            expiredDate.setDate(expiredDate.getDate() + 7);
+            this.cookieService.set('votes', this.mapToJson(this.voteState), expiredDate);
+        }
     }
 
     getCookie(): string {
         var cookie = this.cookieService.get('votes');
-        console.log(cookie);
         return cookie;
+    }
+    getMap(): Map<any, any> {
+        var cookie = this.getCookie();
+        var cookieMap = this.jsonToMap(cookie);
+        return cookieMap;
     }
 
     checkCookie(id: number): boolean {
         var cookie = this.getCookie();
         var cookieMap = this.jsonToMap(cookie);
-        console.log(cookieMap);
-        console.log(cookieMap.has(id));
         return cookieMap.has(id);
     }
 
     deleteCookie(votes: string) {
-        this.cookieService.delete(votes);
+        this.cookieService.deleteAll();
     }
 
-    updateCookie(id: number, value: number) {
 
-    }
-    setState() {
-        var cookie = this.getCookie();
-        var cookieMap = this.jsonToMap(cookie);
-        console.log(cookieMap.keys());
+    getState() {
+        if (this.cookieService.check('votes')) {
+            this.voteState = this.getMap();
+        }
     }
 
     mapToJson(map) {

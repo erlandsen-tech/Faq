@@ -1,11 +1,22 @@
-<mat-form-field class="example-full-width">
-  <input #searchBox id="search-box"
-        (input)="search(searchBox.value)" matInput placeholder="Søk i spørsmål" value="">
-  <ul class="search-result">
-    <li *ngFor="let q of questions$ | async">
-      <a href="/api/getById?id={{q.id}}">
-         {{q.title}}
-         </a>
-    </li>
-  </ul>
-</mat-form-field>
+<div class="basic-container">
+  <mat-form-field class="example-full-width">
+    <input #searchBox id="search-box"
+           (input)="search(searchBox.value)" matInput placeholder="Søk i spørsmål" value="">
+  </mat-form-field>
+    <mat-icon matSuffix>train</mat-icon>
+    <div *ngFor="let q of questions$ | async">
+      <div class="large">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{q.name}}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{q.body}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <p>{{q.answer}}</p>
+        </mat-expansion-panel>
+      </div>
+    </div>
+</div>

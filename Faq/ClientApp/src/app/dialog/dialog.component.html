@@ -1,0 +1,33 @@
+<h3>Er dette riktig?</h3>
+Tittel: 
+<br />
+<h4 mat-dialog-title>{{title}}</h4>
+Innhold:
+
+<br />
+{{body}}
+<br />
+Kategori: 
+
+<br />
+<div *ngIf="category==1; else Sporsmal">
+  Tilbakemelding <br />
+</div>
+<ng-template #Sporsmal>
+  Spørsmål <br />
+</ng-template>
+Navn:
+
+<br />
+{{name}}
+<br />
+E-post:
+
+<br />
+{{email}}
+<br />
+
+<mat-dialog-actions>
+  <button class="mat-raised-button" (click)="save()">Ja</button>
+  <button class="mat-raised-button mat-danger" (click)="close()">Nei</button>
+</mat-dialog-actions>

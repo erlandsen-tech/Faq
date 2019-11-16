@@ -4,6 +4,11 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.navbar-image {
+  min-height: 20px;
+  max-height: 20px;
+}
+
 html {
   font-size: 14px;
 }

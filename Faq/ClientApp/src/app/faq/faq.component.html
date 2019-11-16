@@ -1,9 +1,10 @@
 <h2>Faq</h2>
-
+<!--
 <button (click)="createCookie()" mat-button>Lag</button>
 <button (click)="getCookie()" mat-button>Hent</button>
 <button (click)="checkCookie(1)" mat-button>Sjekk</button>
   <button (click)="deleteCookie('votes')" mat-button>Slett</button>
+-->
 <mat-tab-group [selectedIndex]="selected.value"
                (selectedIndexChange)="selected.setValue($event)">
   <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
@@ -18,22 +19,21 @@
                     {{q.name}}
                   </mat-panel-title>
                   <mat-panel-description>
-                    {{q.body}}
+                    {{q.title}}
                   </mat-panel-description>
                 </mat-expansion-panel-header>
+                <p>{{q.body}}</p>
+                <mat-divider></mat-divider>
                 <p>{{q.answer}}</p>
-              </mat-expansion-panel>
-              <fa-icon [icon]="faThumbsUp" (click)="doot(q,1)" class="fa-thumbs" [class.active]="q.upactive"> </fa-icon>
+              <fa-icon [icon]="faThumbsUp"  (click)="q.points=(q.points+doot(q,1))" class="fa-thumbs" [class.active]="getUpState(q)"> </fa-icon>
               {{q.points}}
-              <fa-icon [icon]="faThumbsDown" (click)="doot(q,-1)" class="fa-thumbs" [class.active]="q.downactive"></fa-icon>
+              <fa-icon [icon]="faThumbsDown" (click)="q.points=(q.points+doot(q,-1))" class="fa-thumbs" [class.active]="getDownState(q)"></fa-icon>
+              </mat-expansion-panel>
             </div>
           </div>
         </div>
       </div>
     </div>
-<!--
-        DRY  -> Dont repeat yourself
--->
     <ng-template #tilbakemeldinger>
       <div *ngFor="let q of dbq">
         <div *ngIf="q.category==1">
@@ -47,9 +47,9 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
             <p>{{q.body}}</p>
-              <fa-icon [icon]="faThumbsUp" (click)="doot(q, 1)" class="fa-thumbs" [class.active]="q.upactive"> </fa-icon>
-              {{q.points}}
-              <fa-icon [icon]="faThumbsDown" (click)="doot(q, -1)" class="fa-thumbs" [class.active]="q.downactive"></fa-icon>
+            <fa-icon [icon]="faThumbsUp" (click)="q.points=(q.points+doot(q,1))" class="fa-thumbs" [class.active]="getUpState(q)"> </fa-icon>
+            {{q.points}}
+            <fa-icon [icon]="faThumbsDown" (click)="q.points=(q.points+doot(q,-1))" class="fa-thumbs" [class.active]="getDownState(q)"></fa-icon>
           </mat-expansion-panel>
         </div>
       </div>
